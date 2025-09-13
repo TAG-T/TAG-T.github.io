@@ -3,24 +3,22 @@
 ## Prosh International Co. - HR Management System
 
 ROOT_DIRECTORY
-
-==> includes/
+includes/
 - header.html
 - sidebar.html
 
-==> layouts/
+layouts/
 - default.html
 - login.html
 
-==> assets/
-
---> css/
+assets/
+css/
 - style.css
 
---> js/
+js/
 - main.js
 
---> images/
+images/
 - logo.png
 - index.html
 - employees.html
