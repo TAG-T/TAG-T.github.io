@@ -1,0 +1,49 @@
+<nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <img class="company-logo" src="{{ "/assets/images/logo.png" |
+        relative_url }}" alt="شركة بروش انترناشونال" />
+        <h3 class="company-name">شركة بروش انترناشونال</h3>
+        <p class="company-subtitle">نظام إدارة الموارد البشرية</p>
+    </div>
+    <div class="sidebar-menu">
+        <a href="/" class="menu-item {% if page.url == '/' %}active{% endif %}">
+            <i class="fas fa-tachometer-alt"></i>
+            <span class="menu-text">لوحة التحكم</span>
+        </a>
+        <a
+            href="{{ "/employees.html" | relative_url }}"
+            class="menu-item {% if page.url == '/employees.html' %}active{% endif %}"
+        >
+            <i class="fas fa-users"></i>
+            <span class="menu-text">إدارة الموظفين</span>
+        </a>
+        <a
+            href="{{ "/analytics.html" | relative_url }}"
+            class="menu-item {% if page.url == '/analytics.html' %}active{% endif %}"
+        >
+            <i class="fas fa-chart-bar"></i>
+            <span class="menu-text">الإحصائيات</span>
+        </a>
+        <a
+            href="{{ "/alerts.html" | relative_url }}"
+            class="menu-item {% if page.url == '/alerts.html' %}active{% endif %}"
+        >
+            <i class="fas fa-bell"></i>
+            <span class="menu-text">التنبيهات</span>
+            <span class="badge" id="alertsCount">0</span>
+        </a>
+        <a
+            href="{{ "/settings.html" | relative_url }}"
+            class="menu-item {% if page.url == '/settings.html' %}active{% endif %}"
+        >
+            <i class="fas fa-cog"></i>
+            <span class="menu-text">الإعدادات</span>
+        </a>
+    </div>
+    <div class="sidebar-footer">
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="fas fa-chevron-right"></i>
+            <span class="toggle-text">إخفاء</span>
+        </button>
+    </div>
+</nav>

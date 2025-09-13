@@ -1,0 +1,290 @@
+---
+layout: default
+title: إدارة الموظفين
+---
+
+<div id="employeesPage" class="page">
+    <div class="page-header">
+        <h1 class="page-title">
+            <i class="fas fa-users"></i>
+            إدارة الموظفين
+        </h1>
+        <p>
+            قائمة الموظفين، خيارات البحث والتصفية، وإدارة السجلات إضافة وتعديل
+            أو حذف
+        </p>
+    </div>
+    <div class="search-filter">
+        <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="البحث بالاسم أو رقم الموظف..."
+        />
+        <select id="nationalityFilter" class="filter-select">
+            <option value="">جميع الجنسيات</option>
+        </select>
+        <select id="statusFilter" class="filter-select">
+            <option value="">جميع الحالات</option>
+            <option value="نشط">نشط</option>
+            <option value="منتهى">منتهى</option>
+        </select>
+        <select id="jobFilter" class="filter-select">
+            <option value="">جميع المهن</option>
+        </select>
+        <select id="workScheduleFilter" class="filter-select">
+            <option value="">كل أنظمة الدوام</option>
+        </select>
+        <button
+            class="btn btn-secondary"
+            id="clearFiltersBtn"
+            title="مسح الفلاتر وعرض الكل"
+        >
+            <i class="fas fa-eraser"></i>
+            عرض الكل
+        </button>
+        <button class="btn btn-primary" id="addEmployeeBtn">
+            <i class="fas fa-plus"></i>
+            إضافة موظف جديد
+        </button>
+    </div>
+    <div id="employeeList" class="table-container">
+        <div class="table-header">
+            <h2>قائمة الموظفين</h2>
+            <span id="employeeCount">0 موظف</span>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>رقم الموظف</th>
+                    <th>الاسم</th>
+                    <th>الجنسية</th>
+                    <th>المهنة</th>
+                    <th>حالة التعاقد</th>
+                    <th>الراتب</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody id="employeeTableBody"></tbody>
+        </table>
+    </div>
+    <div id="employeeDetails" class="employee-details" style="display: none">
+        <div class="page-header">
+            <button id="backBtn" class="btn btn-secondary">
+                <i class="fas fa-arrow-right"></i>
+                العودة للقائمة
+            </button>
+        </div>
+        <div id="employeeDetailsContent"></div>
+    </div>
+    <div id="employeeForm" class="employee-form" style="display: none">
+        <div class="form-tabs">
+            <button type="button" class="tab-btn active" data-tab="personal">
+                المعلومات الشخصية
+            </button>
+            <button type="button" class="tab-btn" data-tab="employment">
+                معلومات الوظيفة
+            </button>
+            <button type="button" class="tab-btn" data-tab="company">
+                معلومات الشركة
+            </button>
+        </div>
+        <form id="employeeDataForm">
+            <div class="tab-content active" id="personal-tab">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="employeeNumber">رقم الموظف *</label
+                        ><input
+                            type="text"
+                            id="employeeNumber"
+                            name="employeeNumber"
+                            required
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="arabicName"
+                            >اسم الموظف باللغة العربية *</label
+                        ><input
+                            type="text"
+                            id="arabicName"
+                            name="arabicName"
+                            required
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="englishName"
+                            >اسم الموظف باللغة الإنجليزية *</label
+                        ><input
+                            type="text"
+                            id="englishName"
+                            name="englishName"
+                            required
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="civilId">البطاقة المدنية *</label
+                        ><input
+                            type="text"
+                            id="civilId"
+                            name="civilId"
+                            required
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="civilIdExpiry">تاريخ انتهاء البطاقة *</label
+                        ><input
+                            type="date"
+                            id="civilIdExpiry"
+                            name="civilIdExpiry"
+                            required
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="nationality">الجنسية *</label
+                        ><input
+                            type="text"
+                            id="nationality"
+                            name="nationality"
+                            required
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="passportNumber">رقم جواز السفر</label
+                        ><input
+                            type="text"
+                            id="passportNumber"
+                            name="passportNumber"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="passportExpiry">تاريخ انتهاء الجواز</label
+                        ><input
+                            type="date"
+                            id="passportExpiry"
+                            name="passportExpiry"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="unifiedNumber">الرقم الموحد</label
+                        ><input
+                            type="text"
+                            id="unifiedNumber"
+                            name="unifiedNumber"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content" id="employment-tab">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="contractDate">تاريخ التعاقد *</label
+                        ><input
+                            type="date"
+                            id="contractDate"
+                            name="contractDate"
+                            required
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="contractStatus">حالة التعاقد *</label
+                        ><select
+                            id="contractStatus"
+                            name="contractStatus"
+                            required
+                        >
+                            <option value="">اختر الحالة</option>
+                            <option value="نشط">نشط</option>
+                            <option value="منتهى">منتهى</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="workSite">موقع العمل</label
+                        ><input type="text" id="workSite" name="workSite" />
+                    </div>
+                    <div class="form-group">
+                        <label for="jobTitle">المهنة *</label
+                        ><input
+                            type="text"
+                            id="jobTitle"
+                            name="jobTitle"
+                            required
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="workSchedule">نظام الدوام *</label
+                        ><select id="workSchedule" name="workSchedule" required>
+                            <option value="">اختر النظام</option>
+                            <option value="كامل">كامل</option>
+                            <option value="دوامين">دوامين</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="currentSalary">الراتب الحالي للموظف *</label
+                        ><input
+                            type="number"
+                            id="currentSalary"
+                            name="currentSalary"
+                            required
+                            min="0"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="workPermitSalary"
+                            >الراتب حسب اذن العمل</label
+                        ><input
+                            type="number"
+                            id="workPermitSalary"
+                            name="workPermitSalary"
+                            min="0"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content" id="company-tab">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="companyName">اسم الشركة</label
+                        ><input
+                            type="text"
+                            id="companyName"
+                            name="companyName"
+                            value="شركة بروش انترناشونال لخدمات التنظيف العام للمباني وإدارة المرافق العامة"
+                            readonly
+                        />
+                    </div>
+                    <div class="form-group">
+                        <label for="adminNotes">ملاحظات إدارية</label
+                        ><textarea
+                            id="adminNotes"
+                            name="adminNotes"
+                            rows="4"
+                        ></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="additionalNotes">اضافات اخرى</label
+                        ><textarea
+                            id="additionalNotes"
+                            name="additionalNotes"
+                            rows="4"
+                        ></textarea>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="form-actions"
+                style="text-align: left; margin-top: 20px"
+            >
+                <button
+                    type="button"
+                    id="cancelFormBtn"
+                    class="btn btn-secondary"
+                >
+                    إلغاء
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> حفظ
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,64 @@
+---
+layout: default
+title: لوحة التحكم
+---
+
+<div id="dashboardPage" class="page">
+    <div class="page-header">
+        <h1 class="page-title">
+            <i class="fas fa-tachometer-alt"></i>
+            لوحة التحكم
+        </h1>
+        <p>نظرة عامة على إحصائيات وإدارة الموظفين في النظام</p>
+    </div>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-users"></i></div>
+            <div class="stat-number" id="totalEmployees">0</div>
+            <div class="stat-label">إجمالي الموظفين</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-user-check"></i></div>
+            <div class="stat-number" id="activeEmployees">0</div>
+            <div class="stat-label">الموظفون النشطون</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-user-times"></i></div>
+            <div class="stat-number" id="inactiveEmployees">0</div>
+            <div class="stat-label">العقود المنتهية</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-money-bill-wave"></i></div>
+            <div class="stat-number" id="avgSalary">0</div>
+            <div class="stat-label">متوسط الراتب</div>
+        </div>
+    </div>
+    <div class="card">
+        <h3 class="card-title"><i class="fas fa-bolt"></i> إجراءات سريعة</h3>
+        <div style="display: flex; gap: 15px; flex-wrap: wrap">
+            <button class="btn btn-primary" id="quickAddEmployee">
+                <i class="fas fa-plus"></i> إضافة موظف جديد
+            </button>
+            <button class="btn btn-secondary" id="quickGenerateReport">
+                <i class="fas fa-file-export"></i> إنشاء تقرير
+            </button>
+            <button class="btn btn-info" id="quickViewAlerts">
+                <i class="fas fa-bell"></i> عرض التنبيهات
+            </button>
+        </div>
+    </div>
+    <div class="card">
+        <h3 class="card-title"><i class="fas fa-history"></i> النشاط الحديث</h3>
+        <div id="recentActivity">
+            <p
+                style="
+                    text-align: center;
+                    color: var(--text-secondary);
+                    padding: 20px;
+                "
+            >
+                لا يوجد نشاط حديث
+            </p>
+        </div>
+    </div>
+</div>

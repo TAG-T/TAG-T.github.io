@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{{ page.title }} - شركة بروش إنترناشيونال</title>
+        <link rel="icon" href="favicon.ico" type="image/x-icon" />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="favicon-32x32.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="favicon-16x16.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="apple-touch-icon.png"
+        />
+        <link rel="manifest" href="site.webmanifest" />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        />
+        <link rel="stylesheet" href="{{ "/assets/css/style.css" | relative_url }}" />
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    </head>
+
+    <body data-theme="light">
+        <div
+            id="dataLoadingOverlay"
+            class="data-loading-overlay"
+            style="display: none"
+        >
+            <div class="spinner-large"></div>
+            <p id="loadingMessage">جاري تحميل بيانات الموظفين...</p>
+            <button id="cancelLoadingBtn" class="btn btn-secondary">
+                إلغاء التحميل
+            </button>
+        </div>
+
+        <div id="dashboard" class="dashboard">
+            {% include sidebar.html %} {% include header.html %}
+
+            <main class="main-content" id="mainContent">{{ content }}</main>
+        </div>
+
+        <div id="deleteModal" class="modal">
+            <div class="modal-content" style="max-width: 500px">
+                <div class="modal-header">
+                    <h2 class="modal-title">تأكيد الحذف</h2>
+                    <button class="close" id="closeDeleteModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p
+                        style="
+                            margin-bottom: 16px;
+                            font-size: large;
+                            font-weight: 900;
+                            color: var(--danger-color);
+                        "
+                    >
+                        ⚠️ تنبيه هام، لا يمكن التراجع عن هذا الإجراء.
+                    </p>
+                    <p style="margin-bottom: 8px">
+                        للتأكيد، اكتب كلمة <strong>" تم "</strong> في الخانة
+                        أدناه:
+                    </p>
+                    <div class="form-group">
+                        <input
+                            type="text"
+                            id="deleteConfirmText"
+                            class="form-control"
+                            placeholder="اكتب ' تم ' هنا"
+                        />
+                    </div>
+                    <p style="margin-bottom: 16px">
+                        هل أنت متأكد من حذف بيانات هذا الموظف؟
+                    </p>
+                    <div
+                        class="form-group"
+                        style="display: flex; align-items: center; gap: 8px"
+                    >
+                        <input
+                            type="checkbox"
+                            id="deleteConfirmCheckbox"
+                            style="width: 1.2em; height: 1.2em"
+                        />
+                        <label for="deleteConfirmCheckbox">
+                            <strong>نعم</strong>، متأكد من حذف البيانات.
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelDeleteBtn" class="btn btn-secondary">
+                        إلغاء
+                    </button>
+                    <button
+                        id="confirmDeleteBtn"
+                        class="btn btn-danger"
+                        disabled
+                    >
+                        تأكيد الحذف
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="restoreModal" class="modal">
+            <div class="modal-content" style="max-width: 500px">
+                <div class="modal-header">
+                    <h2 class="modal-title">استعادة النسخة الاحتياطية</h2>
+                    <button class="close" id="closeRestoreModal">
+                        &times;
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        سيتم استبدال جميع البيانات الحالية بالبيانات من الملف
+                        الذي تم استيراده. هل أنت متأكد من أنك تريد المتابعة؟
+                    </p>
+                    <div class="form-group" id="restoreFileContainer">
+                        <p>
+                            الملف المحدد: <strong id="restoreFileName"></strong>
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="cancelRestoreBtn" class="btn btn-secondary">
+                        إلغاء
+                    </button>
+                    <button id="confirmRestoreBtn" class="btn btn-primary">
+                        استعادة
+                    </button>
+                </div>
+            </div>
+        </div>
+        <script src="{{ "/assets/js/main.js" | relative_url }}"></script>
+    </body>
+</html>

@@ -1,0 +1,78 @@
+---
+layout: default
+title: الإعدادات
+---
+
+<div id="settingsPage" class="page">
+    <div class="page-header">
+        <h1 class="page-title">
+            <i class="fas fa-cog"></i>
+            الإعدادات
+        </h1>
+        <p>إعدادات النظام والنسخ الاحتياطي واستعادة البيانات</p>
+    </div>
+    <div class="settings-section">
+        <h3><i class="fas fa-database"></i> النسخ الاحتياطي للبيانات</h3>
+        <p style="margin-bottom: 20px; color: var(--text-secondary)">
+            قم بعمل نسخة احتياطية من جميع بيانات الموظفين أو استوردها
+        </p>
+        <div class="backup-options">
+            <button class="btn btn-primary" id="exportDataBtn">
+                <i class="fas fa-download"></i> تصدير البيانات
+            </button>
+            <div class="file-input">
+                <input
+                    type="file"
+                    id="importDataInput"
+                    accept=".json,.csv,.xlsx,.xls,.yml,.yaml"
+                />
+                <label for="importDataInput" class="file-input-label"
+                    ><i class="fas fa-upload"></i> استيراد البيانات</label
+                >
+            </div>
+            <button class="btn btn-info" id="downloadTemplateBtn">
+                <i class="fas fa-file-excel"></i> تحميل ملف نموذج
+            </button>
+        </div>
+    </div>
+    <div class="settings-section">
+        <h3><i class="fas fa-trash"></i> حذف البيانات</h3>
+        <p style="margin-bottom: 20px; color: var(--text-secondary)">
+            حذف جميع بيانات الموظفين من النظام
+        </p>
+        <button class="btn btn-danger" id="clearDataBtn">
+            <i class="fas fa-trash-alt"></i> حذف جميع البيانات
+        </button>
+    </div>
+    <div class="settings-section">
+        <h3><i class="fas fa-info-circle"></i> معلومات النظام</h3>
+        <div class="detail-section">
+            <div class="detail-row">
+                <span class="detail-label">إصدار النظام:</span
+                ><span class="detail-value">1.4.0</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">عدد الموظفين:</span
+                ><span class="detail-value" id="settingsEmployeeCount">0</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">آخر تحديث:</span
+                ><span class="detail-value" id="lastUpdate">--</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">حجم البيانات المحفوظة:</span
+                ><span class="detail-value" id="dataSize">--</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">تاريخ آخر نسخة احتياطية:</span
+                ><span class="detail-value" id="lastBackupDate">لا يوجد</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">شركة بروش انترناشيونال:</span
+                ><span class="detail-value"
+                    >جميع الحقوق محفوظة 2025 - ©️TSD
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

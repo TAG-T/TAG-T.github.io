@@ -1,0 +1,33 @@
+---
+layout: login
+title: تسجيل الدخول
+---
+
+<div id="loginPage" class="login-container">
+    <div class="login-card">
+        <img
+            class="company-logo"
+            src="/assets/images/logo.png"
+            alt="شركة بروش انترناشونال"
+        />
+        <h2 class="login-title">شركة بروش انترناشيونال</h2>
+        <p style="margin-bottom: 30px; color: var(--text-secondary)">
+            نظام إدارة الموارد البشرية
+        </p>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">اسم المستخدم</label>
+                <input type="text" id="username" name="username" required />
+            </div>
+            <div class="form-group">
+                <label for="password">كلمة المرور</label>
+                <input type="password" id="password" name="password" required />
+            </div>
+            <button type="submit" class="btn btn-primary btn-full">
+                <i class="fas fa-sign-in-alt"></i>
+                تسجيل الدخول
+            </button>
+            <div id="errorMessage" class="error-message"></div>
+        </form>
+    </div>
+</div>
