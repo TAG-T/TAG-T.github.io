@@ -64,146 +64,77 @@ let importedFile = null;
 // =================== INITIALIZATION & DATA LOADING ===============
 // =================================================================
 
-document.addEventListener('DOMContentLoaded', async function () {
-    const onLoginPage = window.location.pathname.endsWith('/login.html');
-    const isAuthenticated = localStorage.getItem('hr_authenticated') === 'true';
-
-    if (onLoginPage) {
-        document
-            .getElementById('loginForm')
-            .addEventListener('submit', handleLogin);
-        if (isAuthenticated) {
-            window.location.href = '/'; // Redirect if already logged in
-        }
-    } else {
-        if (!isAuthenticated) {
-            window.location.href = '/login.html'; // Redirect to login if not authenticated
-        } else {
-            // User is authenticated and not on login page, proceed to initialize the app
-            document.getElementById('dashboard').style.display = 'block';
-            await initializeApp();
-        }
-    }
-});
+// In assets/js/main.js
+// REPLACE the existing initializeApp and data loading functions with these:
 
 async function initializeApp() {
-    showLoadingOverlay('جاري تحميل بيانات الموظفين...');
-    try {
-        const loadedFromFile = await loadInitialData();
-        if (!loadedFromFile) {
-            console.log('No data file found, loading from local storage.');
-            loadEmployeesFromStorage();
-        }
-        setupEventListeners();
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
-        checkSystemTheme();
-        runPageSpecificScripts();
-    } catch (error) {
-        console.error('Error initializing app:', error);
-        showNotification('حدث خطأ أثناء تحميل البيانات', 'error');
-    } finally {
-        hideLoadingOverlay();
-    }
-}
+    // 1. Try to load data from the browser's local storage first.
+    loadEmployeesFromStorage();
 
-function runPageSpecificScripts() {
-    const path = window.location.pathname;
-
-    // This will run on all pages
-    renderAlerts(); // To update the badge count in the sidebar
-
-    if (path === '/' || path.endsWith('/index.html')) {
-        updateStatistics();
-        updateRecentActivity();
-    } else if (path.endsWith('/employees.html')) {
-        showEmployeeList();
-        populateFilters();
-        renderEmployeeTable();
-    } else if (path.endsWith('/analytics.html')) {
-        createCharts();
-    } else if (path.endsWith('/alerts.html')) {
-        // renderAlerts is already called above, but we ensure it's rendered in the main content too
-        renderAlerts();
-    } else if (path.endsWith('/settings.html')) {
-        updateSystemInfo();
-    }
-}
-
-async function loadInitialData() {
-    const filePaths = [
-        { path: '/db/DB.xlsx', type: 'arrayBuffer', ext: 'xlsx' },
-        { path: '/db/DB.json', type: 'text', ext: 'json' },
-        { path: '/db/DB.yml', type: 'text', ext: 'yml' },
-        { path: '/db/DB.csv', type: 'text', ext: 'csv' },
-    ];
-
-    for (const fileInfo of filePaths) {
+    // 2. If storage is empty (employees array has 0 items), then fetch the file.
+    if (employees.length === 0) {
+        console.log('No data in localStorage. Fetching from server file...');
+        showLoadingOverlay('جاري تحميل بيانات الموظفين...');
         try {
-            updateLoadingMessage(`جاري التحقق من وجود ${fileInfo.path}...`);
-            const response = await fetch(fileInfo.path, { cache: 'no-store' });
-            if (response.ok) {
-                console.log(`Found database file: ${fileInfo.path}`);
-                const content = await response[fileInfo.type]();
-                const parsedData = parseFileContent(content, fileInfo.ext);
-
-                if (
-                    parsedData &&
-                    Array.isArray(parsedData) &&
-                    parsedData.length > 0
-                ) {
-                    employees = parsedData;
-                    filteredEmployees = [...employees];
-                    saveEmployeesToStorage();
-                    showNotification(
-                        `تم تحميل ${employees.length} موظف من ملف البيانات`,
-                        'success'
-                    );
-                    return true;
-                }
+            // This function will attempt to fetch from /db/DB.xlsx
+            const success = await fetchAndLoadData();
+            if (!success) {
+                // 4. If the file is not found, show a notification.
+                showNotification(
+                    'لم يتم العثور على ملف البيانات. سيتم تحميل واجهة فارغة.',
+                    'warning'
+                );
             }
         } catch (error) {
-            console.log(`Could not fetch ${fileInfo.path}: ${error.message}`);
+            console.error('Error fetching initial data:', error);
+            showNotification('حدث خطأ أثناء تحميل البيانات.', 'error');
+        } finally {
+            hideLoadingOverlay();
         }
     }
-    return false;
+
+    // 3. If data was found in storage, the code above is skipped, and the app loads instantly.
+    console.log(`App initialized with ${employees.length} employees.`);
+    setupEventListeners();
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+    checkSystemTheme();
+    runPageSpecificScripts();
 }
 
-function parseFileContent(content, extension) {
-    let rawData;
+async function fetchAndLoadData() {
+    const filePath = site_baseurl + '/db/DB.xlsx';
     try {
-        switch (extension) {
-            case 'xlsx':
-            case 'xls':
-                const workbook = XLSX.read(content, {
-                    type: 'array',
-                    cellDates: true,
-                });
-                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                rawData = XLSX.utils.sheet_to_json(firstSheet, { defval: '' });
-                break;
-            case 'csv':
-                rawData = parseCsv(content);
-                break;
-            case 'json':
-                rawData = JSON.parse(content);
-                break;
-            case 'yml':
-            case 'yaml':
-                rawData = jsyaml.load(content);
-                break;
-            default:
-                return [];
+        updateLoadingMessage(`جاري تحميل ${filePath}...`);
+        const response = await fetch(filePath, { cache: 'no-store' });
+
+        if (response.ok) {
+            console.log(`Successfully fetched ${filePath}`);
+            const content = await response.arrayBuffer();
+            const parsedData = parseFileContent(content, 'xlsx');
+
+            if (parsedData && parsedData.length > 0) {
+                employees = parsedData;
+                filteredEmployees = [...employees];
+                saveEmployeesToStorage(); // Save the freshly fetched data for next time
+                showNotification(
+                    `تم تحميل ${employees.length} موظف من ملف البيانات`,
+                    'success'
+                );
+                return true; // Return true on success
+            }
+        } else {
+            // This handles the case where the file exists but there's a server error (e.g., 404 Not Found)
+            console.error(
+                `File not found or server error: ${response.statusText}`
+            );
+            return false; // Return false on failure
         }
-        return Array.isArray(rawData) ? standardizeData(rawData) : [];
     } catch (error) {
-        console.error(`Error parsing ${extension} file:`, error);
-        showNotification(
-            `خطأ في تحليل ملف البيانات: ${error.message}`,
-            'error'
-        );
-        return [];
+        console.error(`Network or other error fetching file: ${error.message}`);
+        return false; // Return false on failure
     }
+    return false; // Default to false
 }
 
 // =================================================================
